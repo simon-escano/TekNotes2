@@ -1,0 +1,41 @@
+<div class="flex gap-3 hover:overflow-x-auto">
+    {% for course in courses %}
+        <a href="/search/?query={{ course.description }}" class="px-3 py-1 bg-{{ course.color }} rounded-md shadow-lg font-medium text-gray-50 whitespace-nowrap">{{ course.code }}</a>
+    {% endfor %}
+
+    {% for tag in tags %}
+        <a href="/search/?query={{ tag.name }}" class="px-3 py-1 bg-gray-50 text-gray-700 rounded-md shadow-lg whitespace-nowrap">{{ tag.name }}</a>
+    {% endfor %}
+</div>
+
+<div class="flex flex-1 overflow-hidden hover:overflow-y-auto">
+    <div id="notes" class="flex flex-1 gap-3" style="display: none;">
+        {% for note in notes %}
+            <div class="note" data-note-id="{{ note.id }}">
+                {% include 'notes/note.html' %}
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div id="notes-container" class="flex flex-1 gap-3"></div>
+</div>
+
+<script>
+    function partitionNotes() {
+        $('#notes-container').empty();
+        const width = $(window).width();
+        let columns = width <= 500 ? 1 : (width <= 870 ? 2 : (width <= 1070 ? 3 : 4));
+        for (let i = 0; i < columns; i++) {
+            $('#notes-container').append('<div class="flex flex-col flex-1 gap-3"></div>');
+        }
+        $('#notes .note').each(function(index) {
+            const columnIndex = index % columns;
+            $('#notes-container > div').eq(columnIndex).append($(this).clone());
+        });
+    }
+
+    $(document).ready(function() {
+        partitionNotes();
+        $(window).resize(partitionNotes);
+    });
+</script>
