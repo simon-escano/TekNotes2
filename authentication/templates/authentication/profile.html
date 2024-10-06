@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %} {{ profile.user.username }} {% endblock %}
+
+{% block content %}
+    <div class="flex flex-1 flex-col bg-gray-50 rounded-xl overflow-hidden shadow-lg">
+        <div class="flex p-6 gap-6 max-h-56 flex-1 items-center">
+            <div class="flex aspect-square h-full rounded-full bg-[url('{{ profile.avatar.url }}')] bg-cover border-2 border-yellow-500 shadow-lg"></div>
+
+            <div class="flex flex-1 gap-3 items-start">
+                <div class="flex flex-col gap-3 items-baseline">
+                    <div class="flex flex-col gap-1">
+                        <p class="text-2xl text-gray-700 font-semibold"> {{ profile.user.first_name }} {{ profile.user.last_name }} </p>
+                        <p class="text-xl text-gray-500"> {{ profile.user.email }} </p>
+                    </div>
+                    <p class="text-xl">{{ profile.bio }}</p>
+                    <a href="#" class="flex bg-rose-700 rounded-xl gap-4 px-4 py-2">
+                        <p class="new-note-text text-gray-50 font-medium text-lg">Edit profile</p>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex flex-col flex-1 border-t-2 border-gray-200 w-full">
+            <div class="flex w-full p-3 gap-3 items-start">
+                <a href="#" id="" class="flex flex-1 px-4 py-3 rounded-xl shadow-md justify-center {% if True %} bg-rose-700 {% else %} bg-gray-200 {% endif %}">
+                    <p class="text-xl font-medium {% if True %} text-gray-50 {% else %} text-gray-700 {% endif %}">{{ profile.user.first_name }}'s Notes</p>
+                </a>
+                <a href="#" id="" class="flex flex-1 px-4 py-3 bg-gray-200 rounded-xl shadow-md justify-center">
+                    <p class="text-xl text-gray-700 font-medium">{{ profile.user.first_name }}'s Likes</p>
+                </a>
+            </div>
+
+            <div class="flex flex-1 border-t-2 border-gray-200 p-6">
+                {% include 'notes/notes.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
