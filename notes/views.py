@@ -28,6 +28,10 @@ def tek_a_note(request):
 
     return render(request, 'notes/tek_a_note.html', {'form': form})
 
+def note_detail(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+    return render(request, 'notes/note_detail.html', {'note': note})
+
 @login_required
 def delete_note(request, note_id):
     note = get_object_or_404(Note, id=note_id, created_by=request.user)
