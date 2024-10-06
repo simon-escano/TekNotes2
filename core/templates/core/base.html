@@ -1,0 +1,135 @@
+{% extends 'core/core.html' %}
+
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col h-full overflow-hidden">
+        <header class="flex items-center w-full p-3 gap-3 shadow-lg z-10 bg-gray-50">
+            <div class="flex flex-1 items-center gap-4">
+                <img src="{% static 'teknotes/images/Menu.svg' %}" alt="Menu">
+                <a href="/" class="flex items-center gap-2">
+                    <img src="{% static 'teknotes/images/TekNotes-Logo.svg' %}" alt="Logo">
+                    <p id="logo-text" class="font-semibold text-rose-700 text-4xl">TekNotes</p>
+                </a>
+                <form action="{% url 'advanced_search:search' %}" method="get" class="flex flex-1 max-w-[600px] px-4 py-2 rounded-xl bg-gray-200 gap-3 cursor-text min-w-[0px]" onclick="this.querySelector('input[name=\'query\']').focus();">
+                    <img src="{% static 'teknotes/images/Search.svg' %}" alt="Search">
+                    <input name="query" class="placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none min-w-[0px]" type="text" value="{{ query }}" placeholder="Search">
+                </form>
+            </div>
+
+            <div class="flex items-center gap-4">
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'notes:tek_a_note' %}" class="flex bg-rose-700 rounded-xl gap-4 px-4 py-2">
+                        <img src="{% static 'teknotes/images/Edit.svg' %}" alt="Edit">
+                        <p class="new-note-text text-gray-50 font-medium text-lg">Tek a Note</p>
+                    </a>
+                    <a href="{% url 'auth:logout' %}" class="flex rounded-xl gap-4 px-4 py-2 bg-gray-200">
+                        <p class="text-gray-700 text-lg">Log out</p>
+                    </a>
+                {% else %}
+                    <a href="/auth/login/" class="flex bg-rose-700 rounded-xl gap-4 px-6 py-2">
+                        <p class="text-gray-50 font-medium text-lg">Sign In</p>
+                    </a>
+                {% endif %}
+            </div>
+        </header>
+        <main class="flex bg-gray-200 h-full overflow-hidden">
+            <nav class="flex flex-col w-full max-w-72 h-full p-3 gap-3">
+                <a href="/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                    <img src="{% static 'teknotes/images/Home.svg' %}" alt="Home">
+                    <p class="nav-text text-lg text-gray-700 font-medium">Home</p>
+                </a>
+
+                <a href="/your_notes/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/your_notes/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                    <img src="{% static 'teknotes/images/User.svg' %}" alt="User">
+                    <p class="nav-text text-lg text-gray-700 font-medium">Your Notes</p>
+                </a>
+
+                <a href="/archive/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/archive/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                    <img src="{% static 'teknotes/images/Archive.svg' %}" alt="Archive">
+                    <p class="nav-text text-lg text-gray-700 font-medium">Archive</p>
+                </a>
+
+                <a href="/likes/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/likes/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                    <img src="{% static 'teknotes/images/Likes.svg' %}" alt="Likes">
+                    <p class="nav-text text-lg text-gray-700 font-medium">Likes</p>
+                </a>
+
+                <div class="flex rounded-xl px-4 py-3 gap-4">
+                    <img src="{% static 'teknotes/images/Course.svg' %}" alt="Courses">
+                    <p class="nav-text text-lg text-gray-700 font-medium">Courses</p>
+                </div>
+
+                <div class="flex flex-col pl-6 gap-3">
+                    {% for course in your_courses %}
+                        <a href="#" class="flex rounded-xl px-4 py-3 justify-between bg-gray-50 course">
+                            <p class="text-lg text-gray-700">{{ course.code }}</p>
+                            <div class="rounded-full bg-{{ course.color }} h-full aspect-square course-color"></div>
+                        </a>
+                    {% endfor %}
+                    <a id="add-course" href="{% url 'course:add_a_course' %}" class="flex rounded-xl px-4 py-3 justify-between border-2 border-rose-700 hover:bg-rose-700 text-rose-700 hover:text-gray-50 hover:font-regular">
+                        <p class="text-lg font-medium">Add a course</p>
+                        <img src="{% static 'teknotes/images/Add.svg' %}" alt="Courses">
+                    </a>
+                </div>
+            </nav>
+
+            <div class="flex flex-col flex-1 h-full p-3 gap-3 overflow-hidden">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function toggleVisibility() {
+                if ($(window).width() <= 845) {
+                    $('#logo-text, .nav-text, .new-note-text').hide();
+                    $('nav').removeClass('w-full');
+                    $('.active-nav').removeClass('px-6').addClass('px-4')
+                } else {
+                    $('#logo-text, .nav-text, .new-note-text').show();
+                    $('nav').addClass('w-full');
+                    $('.active-nav').removeClass('p-3')
+                }
+            }
+
+            toggleVisibility(); 
+            $(window).resize(toggleVisibility);
+
+            $('.course').hover(
+                function() {
+                    var $this = $(this);
+                    var innerDiv = $this.find('.course-color');
+                    var tempBg = $this.css('background-color');
+                    $this.css('background-color', innerDiv.css('background-color'));
+                    innerDiv.css('background-color', tempBg);
+                    $this.find('p').removeClass('text-gray-700');
+                    $this.find('p').addClass('text-gray-50');
+                },
+                function() {
+                    var $this = $(this);
+                    var innerDiv = $this.find('.course-color');
+                    var tempBg = innerDiv.css('background-color');
+                    innerDiv.css('background-color', $this.css('background-color'));
+                    $this.css('background-color', tempBg);
+                    $this.find('p').removeClass('text-gray-50');
+                    $this.find('p').addClass('text-gray-700');
+                }
+            );
+
+            $('#add-course').hover(
+                function() {
+                    $(this).find('img').attr('src', '{% static "teknotes/images/Add_white.svg" %}');
+                    
+                },
+                function() {
+                    $(this).find('img').attr('src', '{% static "teknotes/images/Add.svg" %}');
+                }
+            );
+        });
+    </script>
+{% endblock %}
