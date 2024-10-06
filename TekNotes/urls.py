@@ -19,7 +19,10 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("", include("notes.urls")),
-    path("auth/", include("authentication.urls")),
-    path("admin/", admin.site.urls),
+    path('', include("core.urls")),
+    path('auth/', include('authentication.urls')),
+    path('notes/', include('notes.urls')),
+    path('course/', include('course.urls')),
+    path('search/', include('advanced_search.urls')),
+    path('admin/', admin.site.urls),
 ]
