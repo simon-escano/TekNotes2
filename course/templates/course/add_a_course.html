@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %} Add a course {% endblock %}
+
+{% block content %}
+    <div class="flex flex-col max-w-[450px] w-full rounded-xl bg-gray-50 self-center shadow-lg">
+        <div class="flex px-4 py-2 bg-rose-700 w-full justify-between items-center rounded-t-xl">
+            <p class="font-medium text-gray-50 text-lg">Add a course</p>
+            <a href="#" onclick="history.back();"><img src="{% static 'teknotes/images/Close.svg' %}" alt="x"></a>
+        </div>
+
+        <div class="flex flex-col items-center justify-center">
+            <form action="." method="post" class="flex flex-col w-full">
+                {% csrf_token %}
+
+                <div class="flex flex-col p-6 gap-3">
+                    <div class="flex gap-3 px-4 py-3 border-2 border-yellow-500 rounded-xl">
+                        {{ form.code }}
+                    </div>
+
+                    <div class="flex gap-3 px-4 py-3 border-2 border-yellow-500 rounded-xl">
+                        {{ form.description }}
+                    </div>
+
+                    <div class="flex items-center justify-center gap-3">
+                        {% for color_code, color_name in form.color.field.choices %}
+                            <div class="color-option rounded-xl h-10 w-10 cursor-pointer bg-{{ color_code }} hover:ring-2 hover:ring-gray-500" title="{{ color_name }}">
+                                <input type="radio" name="color" value="{{ color_code }}" id="{{ color_code }}" class="hidden" />
+                                <label for="{{ color_code }}" class="w-full h-full flex items-center justify-center cursor-pointer rounded-full bg-{{ color_code }}"></label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                    
+                <div class="flex p-6 gap-3 w-full border-t-2 border-gray-200 items-center">
+                    <button class="px-4 py-2 text-gray-50 bg-rose-700 font-medium rounded-md w-full">Add course</button>
+                    <a href="#" onclick="history.back();" class=" flex px-4 py-2 bg-gray-200 rounded-md w-full justify-center">
+                        <p class="text-gray-700">Cancel</p>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.color-option').click(function() {
+                $('.color-option').removeClass('ring-2 ring-gray-500');
+                $(this).addClass('ring-2 ring-gray-500');
+            });
+        });
+    </script>
+{% endblock %}
