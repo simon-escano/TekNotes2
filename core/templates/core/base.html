@@ -8,7 +8,7 @@
     <div class="flex flex-col h-full overflow-hidden">
         <header class="flex items-center w-full p-3 gap-3 shadow-lg z-10 bg-gray-50">
             <div class="flex flex-1 items-center gap-4">
-                <img src="{% static 'teknotes/images/Menu.svg' %}" alt="Menu">
+                <img class="cursor-pointer" id="menu-icon" src="{% static 'teknotes/images/Menu.svg' %}" alt="Menu">
                 <a href="/" class="flex items-center gap-2">
                     <img src="{% static 'teknotes/images/TekNotes-Logo.svg' %}" alt="Logo">
                     <p id="logo-text" class="font-semibold text-rose-700 text-4xl">TekNotes</p>
@@ -41,40 +41,40 @@
         </header>
         <main class="flex bg-gray-200 h-full overflow-hidden">
             <nav class="flex flex-col w-full max-w-72 h-full p-3 gap-3">
-                <a href="/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                <a href="/" class="nav-elem flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
                     <img src="{% static 'teknotes/images/Home.svg' %}" alt="Home">
                     <p class="nav-text text-lg text-gray-700 font-medium">Home</p>
                 </a>
 
-                <a href="/your_notes/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/your_notes/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                <a href="/your_notes/" class="nav-elem flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/your_notes/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
                     <img src="{% static 'teknotes/images/User.svg' %}" alt="User">
                     <p class="nav-text text-lg text-gray-700 font-medium">Your Notes</p>
                 </a>
 
-                <a href="/archive/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/archive/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                <a href="/archive/" class="nav-elem flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/archive/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
                     <img src="{% static 'teknotes/images/Archive.svg' %}" alt="Archive">
                     <p class="nav-text text-lg text-gray-700 font-medium">Archive</p>
                 </a>
 
-                <a href="/likes/" class="flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/likes/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
+                <a href="/likes/" class="nav-elem flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/likes/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
                     <img src="{% static 'teknotes/images/Likes.svg' %}" alt="Likes">
                     <p class="nav-text text-lg text-gray-700 font-medium">Likes</p>
                 </a>
 
-                <div class="flex rounded-xl px-4 py-3 gap-4">
+                <div class="nav-elem flex rounded-xl px-4 py-3 gap-4">
                     <img src="{% static 'teknotes/images/Course.svg' %}" alt="Courses">
                     <p class="nav-text text-lg text-gray-700 font-medium">Courses</p>
                 </div>
 
-                <div class="flex flex-col pl-6 gap-3">
+                <div id="courses" class="flex flex-col pl-6 gap-3">
                     {% for course in your_courses %}
-                        <a href="#" class="flex rounded-xl px-4 py-3 justify-between bg-gray-50 course">
-                            <p class="text-lg text-gray-700">{{ course.code }}</p>
-                            <div class="rounded-full bg-{{ course.color }} h-full aspect-square course-color"></div>
+                        <a href="#" class="course-elem nav-elem flex rounded-xl px-4 py-3 justify-between bg-gray-50 course">
+                            <p class="course-text text-lg text-gray-700">{{ course.code }}</p>
+                            <div class="rounded-full bg-{{ course.color }} h-full min-h-7 aspect-square course-color"></div>
                         </a>
                     {% endfor %}
-                    <a id="add-course" href="{% url 'course:add_a_course' %}" class="flex rounded-xl px-4 py-3 justify-between border-2 border-rose-700 hover:bg-rose-700 text-rose-700 hover:text-gray-50 hover:font-regular">
-                        <p class="text-lg font-medium">Add a course</p>
+                    <a id="add-course" href="{% url 'course:add_a_course' %}" class="course-elem nav-elem flex rounded-xl px-4 py-3 justify-between border-2 border-rose-700 hover:bg-rose-700 text-rose-700 hover:text-gray-50 hover:font-regular">
+                        <p class="course-text text-lg font-medium">Add a course</p>
                         <img src="{% static 'teknotes/images/Add.svg' %}" alt="Courses">
                     </a>
                 </div>
@@ -91,13 +91,19 @@
         $(document).ready(function() {
             function toggleVisibility() {
                 if ($(window).width() <= 845) {
-                    $('#logo-text, .nav-text, .new-note-text').hide();
+                    $('#logo-text, .nav-text, .new-note-text, .course-text').hide(150);
                     $('nav').removeClass('w-full');
                     $('.active-nav').removeClass('px-6').addClass('px-4')
+                    $('#courses').removeClass('pl-6')
+                    $('.course-elem').removeClass('justify-between');
+                    $(".nav-elem").addClass('justify-center');
                 } else {
-                    $('#logo-text, .nav-text, .new-note-text').show();
+                    $('#logo-text, .nav-text, .new-note-text, .course-text').show(150);
                     $('nav').addClass('w-full');
                     $('.active-nav').removeClass('p-3')
+                    $('#courses').addClass('pl-6')
+                    $(".nav-elem").removeClass('justify-center');
+                    $('.course-elem').addClass('justify-between');
                 }
             }
 
@@ -134,6 +140,15 @@
                     $(this).find('img').attr('src', '{% static "teknotes/images/Add.svg" %}');
                 }
             );
+
+            $('#menu-icon').click(function() {
+                var nav = $('nav');
+                if (nav.is(':visible')) {
+                    nav.hide(150);
+                } else {
+                    nav.show(150);
+                }
+            });
         });
     </script>
 {% endblock %}

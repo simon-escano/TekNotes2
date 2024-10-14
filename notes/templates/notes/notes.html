@@ -24,7 +24,7 @@
     function partitionNotes() {
         $('#notes-container').empty();
         const width = $(window).width();
-        let columns = width <= 500 ? 1 : (width <= 870 ? 2 : (width <= 1070 ? 3 : 4));
+        let columns = width <= 665 ? 1 : (width <= 1100 ? 2 : (width <= 1460 ? 3 : 4));
         for (let i = 0; i < columns; i++) {
             $('#notes-container').append('<div class="flex flex-col flex-1 gap-3"></div>');
         }

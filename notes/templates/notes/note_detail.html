@@ -3,16 +3,18 @@
 {% load static %}
 {% load custom_filters %}
 
-{% block title %} note.title {% endblock %}
+{% block title %} {{ note.title|truncatechars:16 }} {% endblock %}
 
 {% block content %}
     <div class="flex flex-col bg-gray-50 overflow-hidden shadow-lg rounded-xl w-full h-full max-w-6xl max-h-[700px] self-center justify-self-center">
-        <div class="flex bg-{{ note.course.color }} px-4 py-2 gap-2 justify-between">
-            <p class="text-gray-50 font-semibold text-lg">{{ note.course }}</p>
-            <a href="/">
-                <img src="{% static 'teknotes/images/close.svg' %}" alt="Close" class="h-6 w-6">
-            </a>
-        </div>
+        {% if note.course %}
+            <div class="flex bg-{{ note.course.color }} px-4 py-2 gap-2 justify-between">
+                <p class="text-gray-50 font-semibold text-lg">{{ note.course }}</p>
+                <a href="/">
+                    <img src="{% static 'teknotes/images/close.svg' %}" alt="Close" class="h-6 w-6">
+                </a>
+            </div>
+        {% endif %}
     
         <div class="flex flex-1 overflow-hidden">
             <div class="flex flex-col p-6 gap-3 flex-1 border-r-2 border-gray-200">
@@ -35,6 +37,31 @@
                         <p class="text-gray-700 font-semibold">{{ note.created_by.first_name }} {{ note.created_by.last_name }}</p>
                     </a>
                 </div>
+
+                {% if request.user == note.created_by %}
+                    <div class="flex rounded-b-xl overflow-hidden p-2 gap-2">
+                        <form action="{% url 'notes:delete_note' note.id %}" method="POST" class="flex">
+                            {% csrf_token %}
+                            <button type="submit" class="flex gap-1 items-center justify-center text-sm bg-rose-200 text-rose-700 rounded-md p-1 pr-2 w-full">
+                                <img src="{% static 'teknotes/images/Trash.svg' %}" alt="Trash">
+                                <p>Delete</p>
+                            </button>
+                        </form>
+                        <form action="{% url 'notes:hide_note' note.id %}" method="POST" class="flex">
+                            {% csrf_token %}
+                            <button type="submit" class="flex gap-1 items-center justify-center text-sm bg-gray-200 text-gray-500 rounded-md p-1 pr-2 w-full">
+                                <img src="{% if note.is_private %}{% static 'teknotes/images/Eye.svg' %}{% else %}{% static 'teknotes/images/Eye_hidden.svg' %}{% endif %}" alt="Eye">
+                                <p>{% if note.is_private %}Unhide{% else %}Hide{% endif %}</p>
+                            </button>
+                        </form>
+                        <form action="{% url 'notes:archive_note' note.id %}" method="POST" class="flex flex-1">
+                            {% csrf_token %}
+                            <button type="submit" class="flex items-center justify-center text-sm bg-gray-200 text-gray-500 rounded-md py-1 w-full">
+                                <p>{% if note.is_archived %}Unarchive{% else %}Archive{% endif %}</p>
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
 
                 <div class="flex justify-between px-4 py-3 gap-3 border-t-2 border-gray-200">
                     <p class="text-gray-500 text-sm">{{ note.modified_at }}</p>

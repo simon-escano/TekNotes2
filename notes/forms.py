@@ -6,9 +6,14 @@ class NoteForm(forms.ModelForm):
         model = Note
         fields = ['title', 'content', 'course', 'tags', 'is_private']
 
-    course = forms.ModelChoiceField(queryset=Course.objects.all(), widget=forms.Select(attrs={
-        'class': 'placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none flex-1 w-full'
-    }), required=False)
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+        empty_label=None,
+        widget=forms.Select(attrs={
+            'class': 'placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none flex-1 w-full'
+        }),
+        required=False
+    )
 
     title = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Title',

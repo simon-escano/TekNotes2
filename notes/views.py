@@ -51,3 +51,14 @@ def archive_note(request, note_id):
         return redirect('/archive/')
     
     return redirect("/archive/")
+
+@login_required
+def hide_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id, created_by=request.user)
+    
+    if request.method == 'POST':
+        note.is_private = not note.is_private
+        note.save()
+        return redirect('/your_notes/')
+    
+    return redirect("/your_notes/")
