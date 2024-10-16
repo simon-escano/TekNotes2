@@ -13,34 +13,34 @@
                     <img src="{% static 'teknotes/images/TekNotes-Logo.svg' %}" alt="Logo">
                     <p id="logo-text" class="font-semibold text-rose-700 text-4xl">TekNotes</p>
                 </a>
-                <form action="{% url 'advanced_search:search' %}" method="get" class="flex flex-1 max-w-[600px] px-4 py-2 rounded-xl bg-gray-200 gap-3 cursor-text min-w-[0px]" onclick="this.querySelector('input[name=\'query\']').focus();">
+                <form action="{% url 'advanced_search:search' %}" method="get" class="flex flex-1 max-w-[600px] px-4 py-2 rounded-xl bg-gray-200 transition-all hover:bg-gray-300 gap-3 cursor-text min-w-[0px]" onclick="this.querySelector('input[name=\'query\']').focus();">
                     <img src="{% static 'teknotes/images/Search.svg' %}" alt="Search">
-                    <input name="query" class="placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none min-w-[0px]" type="text" value="{{ query }}" placeholder="Search">
+                    <input name="query" class="placeholder-gray-500 w-full text-gray-700 bg-transparent border-none focus:outline-none min-w-[0px]" type="text" value="{{ query }}" placeholder="Search">
                 </form>
             </div>
 
             <div class="flex items-center gap-4 h-full">
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'notes:tek_a_note' %}" class="flex bg-rose-700 rounded-xl gap-4 px-4 py-2">
+                    <a href="{% url 'notes:tek_a_note' %}" class="flex bg-rose-700 rounded-xl gap-4 px-4 py-2 transition-all hover:shadow-lg">
                         <img src="{% static 'teknotes/images/Edit.svg' %}" alt="Edit">
                         <p class="new-note-text text-gray-50 font-medium text-lg">Tek a Note</p>
                     </a>
 
                     <div class="flex h-full">
-                        <a href="{% url 'auth:logout' %}" class="flex rounded-l-xl gap-4 px-4 py-2 bg-gray-200">
+                        <a href="{% url 'auth:logout' %}" class="transition-all flex gap-4 px-4 py-2 rounded-l-xl bg-gray-200 hover:shadow-lg">
                             <p class="text-gray-700 text-lg">Log out</p>
                         </a>
-                        <a href="{% url 'auth:profile' request.user.id %}" class="flex h-full aspect-square rounded-r-xl bg-[url('{{ request.user.profile.avatar.url }}')] bg-cover border-2 border-gray-200"></a>
+                        <a href="{% url 'auth:profile' request.user.id %}" class="transition-all flex h-full aspect-square rounded-r-xl bg-[url('{{ request.user.profile.avatar.url }}')] bg-cover border-2 border-gray-200 hover:shadow-lg"></a>
                     </div>
                 {% else %}
-                    <a href="{% url 'auth:login' %}" class="flex bg-rose-700 rounded-xl gap-4 px-6 py-2">
+                    <a href="{% url 'auth:login' %}" class="flex bg-rose-700 rounded-xl gap-4 px-6 py-2 transition-all hover:shadow-lg">
                         <p class="text-gray-50 font-medium text-lg">Sign In</p>
                     </a>
                 {% endif %}
             </div>
         </header>
         <main class="flex bg-gray-200 h-full overflow-hidden">
-            <nav class="flex flex-col w-full max-w-72 h-full p-3 gap-3">
+            <nav class="flex flex-col w-full max-w-72 h-full p-3 gap-3 overflow-y-auto">
                 <a href="/" class="nav-elem flex rounded-xl px-4 py-3 gap-4 {% if request.path == '/' %} active-nav bg-gray-50 px-6 py-3 shadow-lg border-l-8 border-rose-700 {% endif %}">
                     <img src="{% static 'teknotes/images/Home.svg' %}" alt="Home">
                     <p class="nav-text text-lg text-gray-700 font-medium">Home</p>
@@ -68,12 +68,12 @@
 
                 <div id="courses" class="flex flex-col pl-6 gap-3">
                     {% for course in your_courses %}
-                        <a href="#" class="course-elem nav-elem flex rounded-xl px-4 py-3 justify-between bg-gray-50 course">
-                            <p class="course-text text-lg text-gray-700">{{ course.code }}</p>
-                            <div class="rounded-full bg-{{ course.color }} h-full min-h-7 aspect-square course-color"></div>
+                        <a href="{% url 'advanced_search:search_by_course' course.id %}" class="group transition-all course-elem nav-elem flex rounded-xl px-4 py-3 justify-between bg-gray-50 hover:bg-{{ course.color }}">
+                            <p class="course-text text-lg text-gray-700 group-hover:text-gray-50">{{ course.code }}</p>
+                            <div class="rounded-full bg-{{ course.color }} group-hover:bg-gray-50 h-full min-h-7 aspect-square course-color"></div>
                         </a>
                     {% endfor %}
-                    <a id="add-course" href="{% url 'course:add_a_course' %}" class="course-elem nav-elem flex rounded-xl px-4 py-3 justify-between border-2 border-rose-700 hover:bg-rose-700 text-rose-700 hover:text-gray-50 hover:font-regular">
+                    <a id="add-course" href="{% url 'course:add_a_course' %}" class="transition-all course-elem nav-elem flex rounded-xl px-4 py-3 justify-between border-2 border-rose-700 hover:bg-rose-700 text-rose-700 hover:text-gray-50 hover:font-regular">
                         <p class="course-text text-lg font-medium">Add a course</p>
                         <img src="{% static 'teknotes/images/Add.svg' %}" alt="Courses">
                     </a>
@@ -109,27 +109,6 @@
 
             toggleVisibility(); 
             $(window).resize(toggleVisibility);
-
-            $('.course').hover(
-                function() {
-                    var $this = $(this);
-                    var innerDiv = $this.find('.course-color');
-                    var tempBg = $this.css('background-color');
-                    $this.css('background-color', innerDiv.css('background-color'));
-                    innerDiv.css('background-color', tempBg);
-                    $this.find('p').removeClass('text-gray-700');
-                    $this.find('p').addClass('text-gray-50');
-                },
-                function() {
-                    var $this = $(this);
-                    var innerDiv = $this.find('.course-color');
-                    var tempBg = innerDiv.css('background-color');
-                    innerDiv.css('background-color', $this.css('background-color'));
-                    $this.css('background-color', tempBg);
-                    $this.find('p').removeClass('text-gray-50');
-                    $this.find('p').addClass('text-gray-700');
-                }
-            );
 
             $('#add-course').hover(
                 function() {
