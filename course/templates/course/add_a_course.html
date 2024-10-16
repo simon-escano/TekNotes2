@@ -10,31 +10,25 @@
             <p class="font-medium text-gray-50 text-lg">Add a course</p>
             <a href="javascript:history.back()"><img src="{% static 'teknotes/images/Close.svg' %}" alt="x"></a>
         </div>
-
         <div class="flex flex-col items-center justify-center">
             <form action="." method="post" class="flex flex-col w-full">
                 {% csrf_token %}
-
                 <div class="flex flex-col p-6 gap-6">
                     <div class="flex flex-col">
-                        <div class="flex gap-3 px-4 py-3 border-2 border-b-0 border-yellow-500 rounded-t-xl">
+                        <div class="flex gap-3 px-4 py-3 border-2 border-yellow-500 rounded-t-xl">
                             {{ form.code }}
                         </div>
-    
-                        <div class="flex gap-3 px-4 py-3 border-2 border-yellow-500 rounded-b-xl">
+                        <div class="flex gap-3 px-4 py-3 border-2 border-t-0 border-yellow-500 rounded-b-xl">
                             {{ form.description }}
                         </div>
                     </div>
-
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="grid grid-cols-7 gap-2 w-full">
-                            {% for color_code, color_name in form.color.field.choices %}
-                                <div class="color-option rounded-md w-full h-10 cursor-pointer bg-{{ color_code }} hover:ring-4 hover:ring-yellow-500" title="{{ color_name }}">
-                                    <input type="radio" name="color" value="{{ color_code }}" id="{{ color_code }}" class="hidden" />
-                                    <label for="{{ color_code }}" class="w-full h-full cursor-pointer bg-{{ color_code }}"></label>
-                                </div>
-                            {% endfor %}
-                        </div>
+                    <div class="grid cols grid-cols-7 w-full gap-2">
+                        {% for color_code, color_name in form.color.field.choices %}
+                            <div class="color-option transition-all h-10 w-full rounded-md cursor-pointer bg-{{ color_code }} hover:ring hover:ring-yellow-500" title="{{ color_name }}">
+                                <input type="radio" name="color" value="{{ color_code }}" id="{{ color_code }}" class="hidden" />
+                                <label for="{{ color_code }}" class="w-full h-full flex items-center justify-center rounded-md cursor-pointer bg-{{ color_code }}"></label>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
                     
@@ -47,7 +41,6 @@
             </form>
         </div>
     </div>
-
     <script>
         $(document).ready(function() {
             $('.color-option').click(function() {
