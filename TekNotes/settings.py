@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "tags",
     "notes",
     "comments",
+    "advanced_search",
 ]
 
 MIDDLEWARE = [
