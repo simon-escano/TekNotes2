@@ -85,7 +85,7 @@
             {% endif %}
         {% endif %}
 
-        {% if not users and not tags and not courses and not notes %}
+        {% if not users and not course and not tags and not courses and not notes %}
             {% include 'core/no_results.html' with message="No results for" query=query %}
         {% endif %}
     </div>
