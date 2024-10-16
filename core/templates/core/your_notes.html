@@ -3,5 +3,18 @@
 {% block title %} Your notes {% endblock %}
 
 {% block content %}
-    {% include 'notes/notes.html' %}
+    {% if notes %}
+        {% include 'notes/notes.html' %}
+    {% else %}
+        <div class="flex flex-col items-center justify-center w-full h-full">
+            <div class="flex flex-col max-w-96 rounded-xl overflow-hidden shadow-xl">
+                <div class="h-9 bg-rose-700"></div>
+                <div class="flex flex-col bg-gray-50 items-center justify-center p-6 gap-6">
+                    <p class="text-gray-700 text-center">
+                        Notes you like Tek be displayed here.
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

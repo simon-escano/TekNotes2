@@ -1,7 +1,33 @@
 {% extends 'core/base.html' %}
 
+{% load static %}
+
 {% block title %} Home {% endblock %}
 
 {% block content %}
-    {% include 'notes/notes.html' %}
+    {% if notes %}
+        {% include 'notes/notes.html' %}
+    {% else %}
+        <div class="flex flex-col items-center justify-center w-full h-full">
+            <div class="flex flex-col w-full max-w-96 rounded-xl overflow-hidden shadow-xl">
+                <div class="h-9 bg-rose-700"></div>
+                <div class="flex flex-col bg-gray-50 items-center justify-center p-6 gap-6">
+                    <div class="flex flex-col items-center justify-center gap-1">
+                        <h1 class="text-gray-700 text-2xl font-semibold">Welcome to</h1>
+                        <div class="flex items-center gap-2">
+                            <img src="{% static 'teknotes/images/TekNotes-Logo.svg' %}" alt="Logo">
+                            <p id="logo-text" class="font-semibold text-rose-700 text-4xl">TekNotes</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 text-center">
+                        It looks like there are no notes yet. Start contributing to the community!
+                    </p>
+                    <a href="{% url 'notes:tek_a_note' %}" class="flex bg-rose-700 rounded-xl gap-4 px-4 py-2">
+                        <img src="{% static 'teknotes/images/Edit.svg' %}" alt="Edit">
+                        <p class="new-note-text text-gray-50 font-medium text-lg">Tek a Note</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
