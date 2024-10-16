@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404  
 from .forms import NoteForm
 from tags.models import Tag
 from .models import Note
+from django.http import HttpResponseRedirect
 
 def tek_a_note(request):
     if request.method == 'POST':
@@ -22,7 +23,7 @@ def tek_a_note(request):
                         tag, created = Tag.objects.get_or_create(name=tag_name)  
                         note.tags.add(tag)
 
-            return redirect('/your_notes/')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     else:
         form = NoteForm()
 
@@ -37,9 +38,9 @@ def delete_note(request, note_id):
     note = get_object_or_404(Note, id=note_id, created_by=request.user)
     if request.method == 'POST':
         note.delete()
-        return redirect('/your_notes/')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', ''))
     
-    return redirect("/your_notes/")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', ''))
 
 @login_required
 def archive_note(request, note_id):
@@ -48,9 +49,9 @@ def archive_note(request, note_id):
     if request.method == 'POST':
         note.is_archived = not note.is_archived
         note.save()
-        return redirect('/archive/')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', ''))
     
-    return redirect("/archive/")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', ''))
 
 @login_required
 def hide_note(request, note_id):
@@ -59,6 +60,6 @@ def hide_note(request, note_id):
     if request.method == 'POST':
         note.is_private = not note.is_private
         note.save()
-        return redirect('/your_notes/')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', ''))
     
-    return redirect("/your_notes/")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', ''))

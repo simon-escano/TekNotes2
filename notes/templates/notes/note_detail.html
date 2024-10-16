@@ -10,9 +10,7 @@
         {% if note.course %}
             <div class="flex bg-{{ note.course.color }} px-4 py-2 gap-2 justify-between">
                 <p class="text-gray-50 font-semibold text-lg">{{ note.course }}</p>
-                <a href="/">
-                    <img src="{% static 'teknotes/images/close.svg' %}" alt="Close" class="h-6 w-6">
-                </a>
+                <a href="javascript:history.back()"><img src="{% static 'teknotes/images/Close.svg' %}" alt="x"></a>
             </div>
         {% endif %}
     
@@ -134,4 +132,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('form').on('submit', function(e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function(response) {
+                location.reload();
+            });
+        });
+    </script>
 {% endblock %}
