@@ -31,12 +31,12 @@ def notebook(request):
 
 @login_required
 def archive(request):
-    archived_notes = Note.objects.filter(created_by=request.user, is_archived=True).order_by('-modified_at')
-    courses = Course.objects.filter(note__in=archived_notes).distinct()
-    tags = Tag.objects.filter(notes__in=archived_notes).distinct()
+    archived = Note.objects.filter(created_by=request.user, is_archived=True).order_by('-modified_at')
+    courses = Course.objects.filter(note__in=archived).distinct()
+    tags = Tag.objects.filter(notes__in=archived).distinct()
 
     return render(request, 'core/archive.html', {
-        'notes': archived_notes,
+        'notes': archived,
         'courses': courses,
         'tags': tags
     })
@@ -44,15 +44,15 @@ def archive(request):
 @login_required
 def likes(request):
     latest_likes = Like.objects.filter(note=OuterRef('pk'), user=request.user).order_by('-created_at')
-    liked_notes = Note.objects.filter(likes__user=request.user, is_private=False).annotate(
+    liked = Note.objects.filter(likes__user=request.user, is_private=False).annotate(
         like_created_at=Subquery(latest_likes.values('created_at')[:1])
     ).distinct().order_by('-like_created_at')
 
-    courses = Course.objects.filter(note__in=liked_notes).distinct()
-    tags = Tag.objects.filter(notes__in=liked_notes).distinct()
+    courses = Course.objects.filter(note__in=liked).distinct()
+    tags = Tag.objects.filter(notes__in=liked).distinct()
 
     return render(request, 'core/likes.html', {
-        'notes': liked_notes,
+        'notes': liked,
         'courses': courses,
         'tags': tags
     })
