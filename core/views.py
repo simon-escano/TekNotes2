@@ -18,13 +18,13 @@ def index(request):
     })
 
 @login_required
-def your_notes(request):
-    your_notes = Note.objects.filter(created_by=request.user, is_archived=False).order_by('-modified_at')
-    courses = Course.objects.filter(note__in=your_notes).distinct()
-    tags = Tag.objects.filter(notes__in=your_notes).distinct()
+def notebook(request):
+    notebook = Note.objects.filter(created_by=request.user, is_archived=False).order_by('-modified_at')
+    courses = Course.objects.filter(note__in=notebook).distinct()
+    tags = Tag.objects.filter(notes__in=notebook).distinct()
 
-    return render(request, 'core/your_notes.html', {
-        'notes': your_notes,
+    return render(request, 'core/notebook.html', {
+        'notes': notebook,
         'courses': courses,
         'tags': tags
     })

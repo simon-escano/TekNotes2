@@ -5,7 +5,7 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('your_notes/', views.your_notes, name='your_notes'),
+    path('notebook/', views.notebook, name='notebook'),
     path('likes/', views.likes, name='likes'),
     path('archive/', views.archive, name='archive'),
 ]

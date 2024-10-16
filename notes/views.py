@@ -23,7 +23,7 @@ def tek_a_note(request):
                         tag, created = Tag.objects.get_or_create(name=tag_name)  
                         note.tags.add(tag)
 
-            return HttpResponseRedirect('/your_notes/')
+            return HttpResponseRedirect('/notebook/')
     else:
         form = NoteForm()
 
