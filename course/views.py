@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .forms import CourseForm
 
@@ -10,7 +11,7 @@ def add_a_course(request):
             course = form.save(commit=False)
             course.created_by = request.user
             course.save()
-            return redirect('/')
+            return HttpResponseRedirect('/')
     else:
         form = CourseForm()
 

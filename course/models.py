@@ -22,7 +22,7 @@ class Course(models.Model):
     code = models.CharField(max_length=20)
     description = models.CharField(max_length=255)
     color = models.CharField(max_length=20, choices=COLORS, default='gray-500')
-    admin_user = User.objects.get(username='admin')
+    # admin_user = User.objects.get(username='admin')
     created_by = models.ForeignKey(User, related_name='courses', on_delete=models.CASCADE)
 
     def __str__(self):

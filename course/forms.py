@@ -8,12 +8,12 @@ class CourseForm(forms.ModelForm):
 
     code = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Code',
-        'class': 'placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none',
+        'class': 'placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none w-full',
     }))
 
     description = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Description',
-        'class': 'placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none',
+        'class': 'placeholder-gray-500 text-gray-700 bg-transparent border-none focus:outline-none w-full',
     }))
 
     color = forms.ChoiceField(choices=Course.COLORS, widget=forms.Select(attrs={
