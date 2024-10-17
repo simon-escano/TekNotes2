@@ -18,7 +18,9 @@ def search(request):
         Q(tags__name__icontains=query) |
         Q(course__code__icontains=query) |
         Q(course__description__icontains=query) |
-        Q(content__icontains=query)
+        Q(content__icontains=query),
+        is_archived=False,
+        is_private=False
     ).distinct()
     tags = Tag.objects.filter(notes__in=notes).distinct()
     courses = Course.objects.filter(Q(code__icontains=query) | Q(description__icontains=query)).distinct()
