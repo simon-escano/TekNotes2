@@ -9,7 +9,7 @@
         {% if users %}
             <div class="flex flex-col gap-3">
                 {% for user in users %}
-                    <div class="nav-elem flex rounded-xl gap-3">
+                    <div class="flex rounded-xl gap-3">
                         <img src="{% static 'teknotes/images/User.svg' %}" alt="User">
                         <p class="nav-text text-lg text-gray-700 font-medium">Users</p>
                     </div>
@@ -48,9 +48,9 @@
         {% if tags %}
             {% if not users and notes %}
                 <div class="flex flex-col gap-3">
-                    <div class="nav-elem flex rounded-xl gap-3">
+                    <div class="flex rounded-xl gap-3">
                         <img src="{% static 'teknotes/images/Tag.svg' %}" alt="Tag">
-                        <p class="nav-text text-lg text-gray-700 font-medium">Tags</p>
+                        <p class="text-lg text-gray-700 font-medium">Tags</p>
                     </div>
                     {% include 'tags/course_and_tags.html' with wrap=True %}
                 </div>
@@ -61,7 +61,7 @@
             <div class="flex flex-col gap-3">
                 <div class="flex rounded-xl gap-3">
                     <img src="{% static 'teknotes/images/Course.svg' %}" alt="Courses">
-                    <p class="nav-text text-lg text-gray-700 font-medium">Courses</p>
+                    <p class="text-lg text-gray-700 font-medium">Courses</p>
                 </div>
                 <div class="flex flex-wrap gap-3">
                     {% for course in courses %}
@@ -73,9 +73,9 @@
     
         {% if notes %}
             <div class="flex flex-col gap-3">
-                <div class="nav-elem flex rounded-xl gap-3">
+                <div class="flex rounded-xl gap-3">
                     <img src="{% static 'teknotes/images/notebook.svg' %}" alt="Note">
-                    <p class="nav-text text-lg text-gray-700 font-medium">Notes</p>
+                    <p class="text-lg text-gray-700 font-medium">Notes</p>
                 </div>
                 {% include 'notes/notes.html' with no_scroll=True %}
             </div>
