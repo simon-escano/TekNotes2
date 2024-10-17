@@ -36,21 +36,21 @@
 
                 {% if request.user == note.created_by %}
                     <div class="flex rounded-b-xl overflow-hidden p-2 gap-2">
-                        <form action="{% url 'notes:delete_note' note.id %}" method="POST" class="flex">
+                        <form action="{% url 'notes:delete_note' note.id %}" method="POST" class="flex note-form">
                             {% csrf_token %}
                             <button type="submit" class="flex gap-1 items-center justify-center text-sm bg-rose-200 text-rose-700 rounded-md p-1 pr-2 w-full">
                                 <img src="{% static 'teknotes/images/Trash.svg' %}" alt="Trash">
                                 <p>Delete</p>
                             </button>
                         </form>
-                        <form action="{% url 'notes:hide_note' note.id %}" method="POST" class="flex">
+                        <form action="{% url 'notes:hide_note' note.id %}" method="POST" class="flex note-form">
                             {% csrf_token %}
                             <button type="submit" class="flex gap-1 items-center justify-center text-sm bg-gray-200 text-gray-500 rounded-md p-1 pr-2 w-full">
                                 <img src="{% if note.is_private %}{% static 'teknotes/images/Eye.svg' %}{% else %}{% static 'teknotes/images/Eye_hidden.svg' %}{% endif %}" alt="Eye">
                                 <p>{% if note.is_private %}Unhide{% else %}Hide{% endif %}</p>
                             </button>
                         </form>
-                        <form action="{% url 'notes:archive_note' note.id %}" method="POST" class="flex flex-1">
+                        <form action="{% url 'notes:archive_note' note.id %}" method="POST" class="flex flex-1 note-form">
                             {% csrf_token %}
                             <button type="submit" class="flex items-center justify-center text-sm bg-gray-200 text-gray-500 rounded-md py-1 w-full">
                                 <p>{% if note.is_archived %}Unarchive{% else %}Archive{% endif %}</p>
@@ -64,7 +64,7 @@
 
                     <div class="flex gap-3">
                         <div class="flex gap-0.5 items-center">
-                            <form action="{% url 'comments:like' note.id %}" method="post">
+                            <form action="{% url 'comments:like' note.id %}" method="post" class="note-form">
                                 {% csrf_token %}
                                 <button type="submit" class="flex items-center">
                                     <img src="{% if request.user.is_authenticated and note|is_liked:request.user %}{% static 'teknotes/images/thumbed_up.svg' %}{% else %}{% static 'teknotes/images/thumb_up.svg' %}{% endif %}" alt="thumb_up">
@@ -74,7 +74,7 @@
                         </div>
                 
                         <div class="flex gap-0.5 items-center">
-                            <form action="{% url 'comments:dislike' note.id %}" method="post">
+                            <form action="{% url 'comments:dislike' note.id %}" method="post" class="note-form">
                                 {% csrf_token %}
                                 <button type="submit" class="flex items-center">
                                     <img src="{% if request.user.is_authenticated and note|is_disliked:request.user %}{% static 'teknotes/images/thumbed_down.svg' %}{% else %}{% static 'teknotes/images/thumb_down.svg' %}{% endif %}" alt="thumb_down">
@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="flex p-4 gap-3 border-t-2 border-gray-200">
-                    <form action="{% url 'comments:comment' note.id %}" method="post" class="flex flex-1 gap-3 px-3 py-2 border-2 border-yellow-500 rounded-xl">
+                    <form action="{% url 'comments:comment' note.id %}" method="post" class="flex  note-form flex-1 gap-3 px-3 py-2 border-2 border-yellow-500 rounded-xl">
                         {% csrf_token %}
 
                         <img src="{% static 'teknotes/images/comment_yellow.svg' %}" alt="comment">
@@ -132,7 +132,7 @@
     </div>
 
     <script>
-        $('form').on('submit', function(e) {
+        $('note-form').on('submit', function(e) {
             e.preventDefault();
             $.post($(this).attr('action'), $(this).serialize(), function(response) {
                 location.reload();
