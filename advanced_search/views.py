@@ -16,6 +16,7 @@ def search(request):
         Q(created_by__first_name__icontains=query) |
         Q(created_by__last_name__icontains=query) |
         Q(tags__name__icontains=query) |
+        Q(course__code__icontains=query) |
         Q(course__description__icontains=query) |
         Q(content__icontains=query)
     ).distinct()
