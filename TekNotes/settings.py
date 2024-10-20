@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-(gs27_fdn#@!5=j182fos(^atljz20y_=sgf8-mb^g-%8ox30^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['teknotes.onrender.com',]
 
 # Login redirect
 LOGIN_URL = '/auth/login/'
